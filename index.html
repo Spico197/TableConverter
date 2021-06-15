@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TableConverter</title>
+  <style>
+    tr, td, table {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+
+<body>
+  <textarea name="input-text" id="input" cols="150" rows="20"></textarea>
+  <button id="convert-button" type="button">Convert</button>
+  <button id="clear-button" type="button">Clear</button>
+  <table id="output"></table>
+  <script>
+    var convertButton = document.getElementById("convert-button")
+    var clearButton = document.getElementById("clear-button")
+    var inputText = document.getElementById("input")
+    var output = document.getElementById("output")
+
+    convertButton.addEventListener("click", (e) => {
+      let values = inputText.value.split('\n')
+      for (string of values) {
+        let columns = string.trimRight().split(/\s+/)
+        let tr = document.createElement("tr")
+        for (column of columns) {
+          let td = document.createElement("td")
+          td.innerText = column
+          tr.appendChild(td)
+        }
+        output.appendChild(tr)
+      }
+    })
+  </script>
+</body>
+
+</html>
