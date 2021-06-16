@@ -38,6 +38,14 @@
         output.appendChild(tr)
       }
     })
+
+    clearButton.addEventListener("click", (e) => {
+      inputText.value = ""
+      while (output.firstChild) {
+        output.removeChild(output.firstChild)
+      }
+    })
+
   </script>
 </body>
 
