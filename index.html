@@ -7,7 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TableConverter</title>
   <style>
-    tr, td, table {
+    tr,
+    td,
+    table {
       border: 1px solid black;
       border-collapse: collapse;
     }
@@ -15,20 +17,81 @@
 </head>
 
 <body>
-  <textarea name="input-text" id="input" cols="150" rows="20"></textarea>
-  <button id="convert-button" type="button">Convert</button>
-  <button id="clear-button" type="button">Clear</button>
-  <table id="output"></table>
+  <div>
+    <div>
+      <label for="input">Input</label>
+    </div>
+    <textarea name="input-text" id="input" cols="150" rows="20"></textarea>
+  </div>
+  <div>
+    <label>Delimiter</label>
+    <div>
+      <label>
+        <input type="radio" id="space-radio" name="lineSep" value="space" checked="checked">SPACE
+      </label>
+      <label>
+        <input type="radio" id="and-radio" name="lineSep" value="and">AND(&)
+      </label>
+      <label>
+        <input type="radio" id="comma-radio" name="lineSep" value="comma">COMMA(,)
+      </label>
+      <label>
+        <input type="radio" id="tab-radio" name="lineSep" value="tab">TAB(\t)
+      </label>
+      <label>
+        <input type="radio" id="vbar-radio" name="lineSep" value="vbar">VBAR(|)
+      </label>
+      <label>
+        <input type="radio" id="other-radio" name="lineSep" value="quotespace">OtherRegExp:
+        <input type="text" id="other-regexp">
+      </label>
+    </div>
+  </div>
+  <div>
+    <button id="convert-button" type="button">Convert</button>
+    <button id="clear-button" type="button">Clear</button>
+  </div>
+  <div>
+    <table id="output"></table>
+  </div>
   <script>
     var convertButton = document.getElementById("convert-button")
     var clearButton = document.getElementById("clear-button")
     var inputText = document.getElementById("input")
     var output = document.getElementById("output")
 
+    var spaceRadio = document.getElementById("space-radio")
+    var andRadio = document.getElementById("and-radio")
+    var commaRadio = document.getElementById("comma-radio")
+    var tabRadio = document.getElementById("tab-radio")
+    var vbarRadio = document.getElementById("vbar-radio")
+    var otherRadio = document.getElementById("other-radio")
+    var otherRegExp = document.getElementById("other-regexp")
+
+    function getDelimiter() {
+      let delimiter = null
+      if (spaceRadio.checked) {
+        delimiter = /\s+/
+      } else if (andRadio.checked) {
+        delimiter = /&/
+      }else if (commaRadio.checked) {
+        delimiter = /,/
+      }else if (tabRadio.checked) {
+        delimiter = /\t/
+      }else if (vbarRadio.checked) {
+        delimiter = /\|/
+      }else if (otherRadio.checked) {
+        delimiter = new RegExp(otherRegExp)
+      }
+      return delimiter
+    }
+
     convertButton.addEventListener("click", (e) => {
       let values = inputText.value.split('\n')
+      let delimiter = getDelimiter()
+      console.log(delimiter)
       for (string of values) {
-        let columns = string.trimRight().split(/\s+/)
+        let columns = string.trimRight().split(delimiter)
         let tr = document.createElement("tr")
         for (column of columns) {
           let td = document.createElement("td")
